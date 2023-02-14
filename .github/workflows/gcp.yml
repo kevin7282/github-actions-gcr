@@ -1,5 +1,5 @@
 ---
-name: Build and Push Python Image to Google Cloud Platform
+name: Build and Push Python Image to Google Cloud Platform - 
 on:
   push:
     branches: [ main ]
@@ -8,8 +8,8 @@ jobs:
     name: Build and Push to GCP
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: lesson-087
-      PROJECT_ID: devopsbyexample-325402
+      IMAGE_NAME: gcr-app
+      PROJECT_ID: sincere-actor-377315
     steps:
     - name: Checkout
       uses: actions/checkout@v2
