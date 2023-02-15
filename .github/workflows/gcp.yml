@@ -8,6 +8,7 @@ jobs:
     name: Build and Push to GCP
     runs-on: ubuntu-latest
     env:
+      GOOGLE_CREDENTIALS: ${{ secrets.SERVICE_ACCOUNT_KEY }}
       IMAGE_NAME: gcr-app-blue
       PROJECT_ID: sincere-actor-377315
     steps:
