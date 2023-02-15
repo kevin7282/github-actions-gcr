@@ -6,10 +6,15 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
-    steps:      
+    env:
+      GOOGLE_CREDENTIALS: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+      IMAGE_NAME: gcr-app-blue
+      PROJECT_ID: sincere-actor-377315      
+    steps:
       - uses: actions/checkout@v3
       - name: Authenticate to Google Cloud
         id: auth
+
         uses: google-github-actions/auth@v0
         with:
           #workload_identity_provider: projects/123123123/locations/global/workloadIdentityPools/the-workload-pool/providers/the-provider
