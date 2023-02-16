@@ -10,7 +10,7 @@
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.SERVICE_ACCOUNT_KEY }}
         IMAGE_NAME: gcr-app-blue
-        PROJECT_ID: sincere-actor-377315
+        PROJECT_ID: prod-378015
       steps:
       - name: Checkout
         uses: actions/checkout@v2
