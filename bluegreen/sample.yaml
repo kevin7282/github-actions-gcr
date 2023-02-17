@@ -1,0 +1,99 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-1.10
+  namespace: default
+  labels:
+    app: nginx
+    version: "1.10"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.10
+          ports:
+            - name: http
+              containerPort: 80
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - nginx
+            topologyKey: kubernetes.io/hostname
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: default
+spec:
+  selector:
+    app: nginx
+    version: "1.10"
+  ports:
+    #- protocol: TCP
+    - name: http
+      port: 80
+      targetPort: 80
+  type:  LoadBalancer
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    #kubernetes.io/ingress.class: "gce-internal"
+    #kubernetes.io/ingress.global-static-ip-name: "ingress-webapps"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: "/*"
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: nginx-service
+            port:
+              number: 80
+
+
+---
+apiVersion: "autoscaling/v2"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "nginx-2-hpa-ycjn"
+  namespace: "default"
+  labels:
+    app: "nginx-2"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "nginx-2"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      target:
+        type: "Utilization"
+        averageUtilization: 80
