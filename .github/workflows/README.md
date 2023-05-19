@@ -1,4 +1,4 @@
-# Ansible deployment for JIRA
+# Use Github Action workflow
 
 ## Table of contents
 
@@ -31,7 +31,7 @@ GKE_SA_KEY: the content of the service account JSON file
 Update .github/workflows/gke.yml to match the values corresponding to the VM
 
 gcloud container clusters get-credentials gke-cluster1 —-region=us-central1 -—project=sincere-actor-377315
-gcloud auth activate-service-account --key-file=D:\arctiq\sincere-actor-377315-c1f7b863241e.json
+gcloud auth activate-service-account --key-file=D:\devops\sincere-actor-377315-c1f7b863241e.json
 
 **TODO**: Make more features for Falsk website
 
